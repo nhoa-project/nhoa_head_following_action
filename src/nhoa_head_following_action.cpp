@@ -206,17 +206,20 @@ void Nhoa_head_following_action::headFollowingCallback(
   headFeedback_.found = person_detected_;
   headFeedback_.person_id = found_frame;
 
-  std::string stop_head_manager =
-      "rosservice call /pal_startup_control/stop + \" app : 'head_manager' \"";
-  std::string start_head_manager = "rosservice call /pal_startup_control/start "
-                                   "\" app : 'head_manager' args: ''\"";
+  // std::string stop_head_manager =
+  //     "rosservice call /pal_startup_control/stop + \" app : 'head_manager'
+  //     \"";
+  // std::string start_head_manager = "rosservice call
+  // /pal_startup_control/start "
+  //                                  "\" app : 'head_manager' args: ''\"";
   if (person_detected_) {
-    system(stop_head_manager.c_str());
+    // system(stop_head_manager.c_str());
     control_msgs::PointHeadGoal head_goal = computeLookAtPointGoal(tfperson);
     pointHeadClient_->sendGoal(head_goal);
-  } else {
-    system(start_head_manager.c_str());
   }
+  // else {
+  //   system(start_head_manager.c_str());
+  // }
 
   ros::Rate r(control_frequency_);
   bool exit = false;
@@ -250,12 +253,12 @@ void Nhoa_head_following_action::headFollowingCallback(
     headFeedback_.found = person_detected_;
     headFeedback_.person_id = found_frame;
     if (person_detected_) {
-      system(stop_head_manager.c_str());
+      // system(stop_head_manager.c_str());
       control_msgs::PointHeadGoal head_goal = computeLookAtPointGoal(tfperson);
       pointHeadClient_->sendGoal(head_goal);
-    } else {
-      system(start_head_manager.c_str());
-    }
+    } // else {
+      // system(start_head_manager.c_str());
+    //}
 
     // Posible states:
     // PENDING, ACTIVE, RECALLED, REJECTED, PREEMPTED, ABORTED, SUCCEEDED, LOST
