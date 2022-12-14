@@ -1,0 +1,16 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+	<!--<master auto="start"/>
+  	<param name="/use_sim_time" value="true"/>-->
+
+     <!-- launch-prefix="xterm -e gdb (doble hyphen)args"-->
+	 <node pkg="nhoa_head_following_action" type="nhoa_head_following_action" name="nhoa_head_following_action" output="screen"  >
+
+		<param name="hri_ids_topic" type="string" value="humans/bodies/tracked" />
+		<param name="control_frequency" type="double" value="1.0" />
+		<param name="robot_head_frame" type="string" value="head_front_camera_link" />
+
+	</node>
+
+</launch>

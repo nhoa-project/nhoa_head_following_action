@@ -1,0 +1,11 @@
+# person to follow
+# with target_id = "-1", the robot follows the first person detected
+string target_id
+---
+# Result
+string result
+uint32 value
+---
+# Feedback
+string person_id
+bool found
