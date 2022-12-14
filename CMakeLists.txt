@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   cmake_modules
   geometry_msgs
   control_msgs
+  play_motion_msgs
   hri_msgs
   rosconsole
   roscpp
@@ -88,6 +89,7 @@ generate_messages(
   std_msgs
   geometry_msgs
   control_msgs
+  play_motion_msgs
   actionlib_msgs
   hri_msgs
 )
@@ -123,7 +125,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES nhoa_head_following_action
-  CATKIN_DEPENDS actionlib actionlib_msgs cmake_modules geometry_msgs rosconsole roscpp std_msgs angles tf tf2_ros hri_msgs control_msgs 
+  CATKIN_DEPENDS actionlib actionlib_msgs cmake_modules geometry_msgs rosconsole roscpp std_msgs angles tf tf2_ros hri_msgs control_msgs play_motion_msgs
   DEPENDS system_lib
 )
 

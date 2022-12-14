@@ -47,6 +47,7 @@ Nhoa_head_following_action::Nhoa_head_following_action(tf2_ros::Buffer *tf) {
   // _2); dsrv_->setCallback(cb);
 
   n.param<double>("control_frequency", control_frequency_, 1.0);
+  n.param<bool>("use_look_around", use_look_around_, true);
   n.param<std::string>("robot_head_frame", robot_head_frame_,
                        "head_front_camera_link");
 
@@ -66,19 +67,23 @@ Nhoa_head_following_action::Nhoa_head_following_action(tf2_ros::Buffer *tf) {
   // cb = boost::bind(&Upo_navigation_macro_actions::reconfigureCB, this, _1,
   // _2); dsrv_->setCallback(cb);
 
-  // people_sub_ = nh.subscribe<people_msgs::People>(
-  //    people_topic.c_str(), 1, &Nhoa_approach_action::peopleCallback, this);
+  if (use_look_around_) {
+    playMotionClient_.reset(new PlayMotionClient("play_motion"));
+    while (!playMotionClient_->waitForServer(ros::Duration(0.5))) {
+      ROS_WARN(
+          "\n\n\nWaiting for connection to PlayMotion action server\n\n\n");
+    }
+    ROS_INFO("\n\n\nPlayMotionAction client connected!\n\n\n");
+  }
 
   // pointHeadClient_ = std::make_shared<PointHeadClient>(
   //    "head_controller/point_head_action", false);
   pointHeadClient_.reset(
       new PointHeadClient("/head_controller/point_head_action"));
-
-  // ROS_INFO("Waiting for PointHeadClient action server to start...");
   while (!pointHeadClient_->waitForServer(ros::Duration(0.5))) {
     ROS_WARN("\n\n\nWaiting for connection to PointHead action server\n\n\n");
   }
-  ROS_INFO("\n\n\nPointHeadClient action client connected!\n\n\n");
+  ROS_INFO("\n\n\nPointHeadAction client connected!\n\n\n");
   // ros::Duration(10.0).sleep();
 
   // Initialize action server
@@ -112,19 +117,6 @@ Upo_navigation_macro_actions::reconfigureCB(upo_navigation_macro_actions::Naviga
   //leds_number_ = config.leds_number;
 
 }*/
-
-/*
-MoveBase server:
------------------
-Action Subscribed topics:
-move_base/goal		[move_base_msgs::MoveBaseActionGoal]
-move_base/cancel 	[actionlib_msgs::GoalID]
-
-Action Published topcis:
-move_base/feedback	[move_base_msgs::MoveBaseActionFeedback]
-move_base/status	[actionlib_msgs::GoalStatusArray]
-move_base/result	[move_base_msgs::MoveBaseAcionResult]
-*/
 
 bool Nhoa_head_following_action::getPersonFromHRI(
     const std::string id, std::string &found_id,
@@ -214,12 +206,17 @@ void Nhoa_head_following_action::headFollowingCallback(
   //                                  "\" app : 'head_manager' args: ''\"";
   if (person_detected_) {
     // system(stop_head_manager.c_str());
+    if (use_look_around_) {
+      playMotionClient_->cancelAllGoals();
+    }
     control_msgs::PointHeadGoal head_goal = computeLookAtPointGoal(tfperson);
     pointHeadClient_->sendGoal(head_goal);
+  } else if (use_look_around_) {
+    // system(start_head_manager.c_str());
+    play_motion_msgs::PlayMotionGoal motion_goal;
+    motion_goal.motion_name = "look_around";
+    playMotionClient_->sendGoal(motion_goal);
   }
-  // else {
-  //   system(start_head_manager.c_str());
-  // }
 
   ros::Rate r(control_frequency_);
   bool exit = false;
@@ -254,11 +251,15 @@ void Nhoa_head_following_action::headFollowingCallback(
     headFeedback_.person_id = found_frame;
     if (person_detected_) {
       // system(stop_head_manager.c_str());
+      playMotionClient_->cancelAllGoals();
       control_msgs::PointHeadGoal head_goal = computeLookAtPointGoal(tfperson);
       pointHeadClient_->sendGoal(head_goal);
-    } // else {
+    } else if (use_look_around_) {
       // system(start_head_manager.c_str());
-    //}
+      play_motion_msgs::PlayMotionGoal motion_goal;
+      motion_goal.motion_name = "look_around";
+      playMotionClient_->sendGoal(motion_goal);
+    }
 
     // Posible states:
     // PENDING, ACTIVE, RECALLED, REJECTED, PREEMPTED, ABORTED, SUCCEEDED, LOST

@@ -10,6 +10,7 @@
 #include <cmath>
 #include <control_msgs/PointHeadAction.h>
 #include <iostream>
+#include <play_motion_msgs/PlayMotionAction.h>
 //#include <control_msgs/PointHeadActionGoal.h>
 #include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/Pose2D.h>
@@ -111,6 +112,11 @@ private:
   typedef std::shared_ptr<PointHeadClient> PointHeadClientPtr;
   PointHeadClientPtr pointHeadClient_;
 
+  typedef actionlib::SimpleActionClient<play_motion_msgs::PlayMotionAction>
+      PlayMotionClient;
+  typedef std::shared_ptr<PlayMotionClient> PlayMotionClientPtr;
+  PlayMotionClientPtr playMotionClient_;
+
   tf2_ros::Buffer *tf_;
   tf2_ros::TransformListener *tflistener_;
 
@@ -129,6 +135,7 @@ private:
   //
   bool person_detected_;
   //
+  bool use_look_around_;
   std::string robot_head_frame_; // head_front_camera_link
 
   // bool test_;
