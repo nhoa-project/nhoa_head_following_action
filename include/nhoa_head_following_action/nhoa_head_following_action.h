@@ -9,6 +9,7 @@
 #include <angles/angles.h>
 #include <cmath>
 #include <control_msgs/PointHeadAction.h>
+#include <iostream>
 //#include <control_msgs/PointHeadActionGoal.h>
 #include <geometry_msgs/PointStamped.h>
 #include <geometry_msgs/Pose2D.h>
