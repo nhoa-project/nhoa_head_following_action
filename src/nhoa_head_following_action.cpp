@@ -170,7 +170,7 @@ control_msgs::PointHeadGoal Nhoa_head_following_action::computeLookAtPointGoal(
   pointStamped.header.stamp = ros::Time::now();
   pointStamped.point.x = p.transform.translation.x;
   pointStamped.point.y = p.transform.translation.y;
-  pointStamped.point.z = 1.0; // p.transform.translation.z; // or try with 1.0
+  pointStamped.point.z = 1.0; //
 
   // build the action goal
   control_msgs::PointHeadGoal goal;
@@ -250,8 +250,10 @@ void Nhoa_head_following_action::headFollowingCallback(
     headFeedback_.found = person_detected_;
     headFeedback_.person_id = found_frame;
     if (person_detected_) {
-      // system(stop_head_manager.c_str());
-      playMotionClient_->cancelAllGoals();
+      if (use_look_around_) {
+        // system(stop_head_manager.c_str());
+        playMotionClient_->cancelAllGoals();
+      }
       control_msgs::PointHeadGoal head_goal = computeLookAtPointGoal(tfperson);
       pointHeadClient_->sendGoal(head_goal);
     } else if (use_look_around_) {

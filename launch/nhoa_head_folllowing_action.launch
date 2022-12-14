@@ -10,7 +10,7 @@
 		<param name="hri_ids_topic" type="string" value="humans/bodies/tracked" />
 		<param name="control_frequency" type="double" value="1.0" />
 		<param name="robot_head_frame" type="string" value="head_front_camera_link" />
-		<param name="use_look_around" type="bool" value="false" />
+		<param name="use_look_around" type="bool" value="true" />
 
 	</node>
 
