@@ -170,7 +170,7 @@ control_msgs::PointHeadGoal Nhoa_head_following_action::computeLookAtPointGoal(
   pointStamped.header.stamp = ros::Time::now();
   pointStamped.point.x = p.transform.translation.x;
   pointStamped.point.y = p.transform.translation.y;
-  pointStamped.point.z = 1.0; //
+  pointStamped.point.z = 1.0; // p.transform.translation.z + 1.0; //
 
   // build the action goal
   control_msgs::PointHeadGoal goal;
