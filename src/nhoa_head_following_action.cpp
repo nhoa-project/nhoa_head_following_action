@@ -49,7 +49,7 @@ Nhoa_head_following_action::Nhoa_head_following_action(tf2_ros::Buffer *tf) {
   n.param<double>("control_frequency", control_frequency_, 1.0);
   n.param<bool>("use_look_around", use_look_around_, true);
   n.param<std::string>("robot_head_frame", robot_head_frame_,
-                       "head_front_camera_link");
+                       "head_front_camera_color_optical_frame");
 
   person_detected_ = false;
 
@@ -261,6 +261,7 @@ void Nhoa_head_following_action::headFollowingCallback(
       play_motion_msgs::PlayMotionGoal motion_goal;
       motion_goal.motion_name = "look_around";
       playMotionClient_->sendGoal(motion_goal);
+      use_look_around_ = false;
     }
 
     // Posible states:
