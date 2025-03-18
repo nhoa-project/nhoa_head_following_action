@@ -4,7 +4,7 @@
   <version>0.0.0</version>
   <description>The nhoa_head_following_action package</description>
 
-  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="noeperez@upo.es">Noé Pérez</maintainer>
@@ -16,7 +16,7 @@
   <license>MIT</license>
 
 
- 
+
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>actionlib</build_depend>
   <build_depend>actionlib_msgs</build_depend>
@@ -31,9 +31,6 @@
   <build_depend>angles</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>tf2_ros</build_depend>
-  <build_depend>common_rosdeps</build_depend>
-  <!--build_depend>dynamic_reconfigure</build_depend-->
-
 
   <run_depend>actionlib</run_depend>
   <run_depend>actionlib_msgs</run_depend>
@@ -48,9 +45,6 @@
   <run_depend>angles</run_depend>
   <run_depend>tf</run_depend>
   <run_depend>tf2_ros</run_depend>
-  <run_depend>common_rosdeps</run_depend>
-  <!--run_depend>dynamic_reconfigure</run_depend-->
-
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
